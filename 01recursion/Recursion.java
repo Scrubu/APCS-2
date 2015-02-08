@@ -5,6 +5,12 @@ public class Recursion{
     }
 
     public int fact(int n){
+	if(n<0){
+	    throw new IllegalArgumentException("n must be positive");
+	}
+	if(n==0){
+	    return 0;
+	}
 	if(n==1){
 	    return 1;
 	}
@@ -14,6 +20,9 @@ public class Recursion{
     }
     
     public int fib(int n){
+	if(n<0){
+	    throw new IllegalArgumentException("n must be positive");
+	}
         return fibHelp(n,0,1);
     }
 
@@ -26,6 +35,15 @@ public class Recursion{
     }
     
     public double sqrt(double n){
+	if(n<0){
+	    throw new IllegalArgumentException("n must be positive");
+	}
+	if(n==0){
+	    return 0.0;
+	}
+	if(n==1){
+	    return 1;
+	}
 	   return sqrtHelp(n,1);
     }
 
