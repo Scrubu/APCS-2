@@ -38,8 +38,8 @@ public class KnightsTour{
 	    }
 	    ans+="\n";
 	}
-	return  ans;
-	//	return hide + go(0,0) + ans + "\n" + show;
+	//return  ans;
+	return hide + go(0,0) + ans + "\n" + show;
     }
 
     public KnightsTour(int size){
