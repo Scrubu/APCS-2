@@ -38,8 +38,8 @@ public class KnightsTour{
 	    }
 	    ans+="\n";
 	}
-	//return  ans;
-	return hide + go(0,0) + ans + "\n" + show;
+	//	return  ans;
+		return hide + go(0,0) + ans + "\n" + show;
     }
 
     public KnightsTour(int size){
@@ -48,20 +48,14 @@ public class KnightsTour{
 
     
 
-    public void solve(){
-	if(!solve(0,0,1)){
-	    //  System.out.println("no solution");
-	}
-	else{
-	    //   System.out.println("solution works");
-	}
+    public boolean solve(){
+	return solve(0,0,1);
     }
 
 
     public void solve(int startx, int starty){
-	if(!solve(startx,starty,1)){
-	    //	 System.out.println("no solution");
-	    }
+	solve(startx,starty,1);
+	 
       	
     }
 
