@@ -7,6 +7,7 @@ public class Silver{
     private int endx;
     private int endy;
 
+
     public Silver(int x, int y, int t,char[][]dirt, int r1,int c1, int r2,int c2){
 	board = new char[x][y];
 	time = t;
@@ -35,32 +36,33 @@ public class Silver{
     }
 
     public int solve(){
-	return solve(startx,starty,endx,endy,time,0);
+	return solve(startx,starty,endx,endy,time);
     }
 
-    public int solve(int sX,int sY,int eX,int eY,int t,int moves){
+    public int solve(int sX,int sY,int eX,int eY,int t){
 	System.out.println(this);
-	System.out.println(t);
-	if(t==0 && sX==eX && sY==eY){
-	    return moves;
+	if(t==0){
+	    if(sX==eX && sY==eY){
+		return 1;
+	    }
+	    else{
+		return 0;
+	    }
 	}
-	if(sX<0 || sY<0 || sX>=board.length || sY>= board[sX].length|| t==0|| board[sX][sY]=='*'){
+	char here=' ';
+	try{
+	    here=board[sX][sY];
+	}catch(ArrayIndexOutOfBoundsException e){
 	    return 0;
 	}
-
-	    board[sX][sY]='*';
-	    moves+=1;
-	    t-=1;
+	if(here=='*'){
+	    return 0;
+	}
 	
-	
-	return solve(sX+1,sY,eX,eY,t,moves)+
-	    solve(sX+1,sY+1,eX,eY,t,moves)+
-	    solve(sX,sY+1,eX,eY,t,moves)+
-	    solve(sX,sY-1,eX,eY,t,moves)+
-	    solve(sX-1,sY+1,eX,eY,t,moves)+
-	    solve(sX-1,sY-1,eX,eY,t,moves)+
-	    solve(sX+1,sY,eX,eY,t,moves)+
-	    solve(sX-1,sY,eX,eY,t,moves);
+	return solve(sX-1,sY,eX,eY,t-1)+
+	    solve(sX+1,sY,eX,eY,t-1)+
+	    solve(sX,sY+1,eX,eY,t-1)+
+	    solve(sX,sY-1,eX,eY,t-1);
     }
 
 
