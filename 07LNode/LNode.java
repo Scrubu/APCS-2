@@ -3,6 +3,11 @@ public class LNode{
     private int value;
 
 
+    public String toString(){
+	String ans="";
+	return ans;
+    }
+ 
     public void setNext(LNode n){
 	next = n;
     }
@@ -15,4 +20,5 @@ public class LNode{
     public int getNext(){
 	return next;
     }
+
 }

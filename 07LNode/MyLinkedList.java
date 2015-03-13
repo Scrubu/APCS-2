@@ -1,6 +1,8 @@
 public class MyLinkedList{
     private LNode head;
+    private LNode last;
     private LNode current;
+
 
     public String toString(){
 	String ans = "[ ";
@@ -12,18 +14,24 @@ public class MyLinkedList{
 	return ans.substring(0,ans.length()-1)+"]";
     }
 
-    public boolean add(int x){//not all lists have enough capacity may return false
+    public void setLast(){
 	try{
 	    LNode temp = head;
-	while(current.getNext() != null){
-	    current.setNext(current.getNext()+1);
+	while(temp.getNext() != null){
+	    temp.setNext(temp.getNext()+1);
 	}
-	current.setValue(x);
-	return true;
+	last = temp.getNext();
+	    }catch(IndexOutofBoundsException e){
+	    last = temp;
+	}
+    }
+
+    public boolean add(int x){//not all lists have enough capacity may return false
+	try{
+	    last.setValue(x);
 	}catch(IndexOutofBoundsException e){
 	    return false;
 	}
-
     }
 
     public int size(){
