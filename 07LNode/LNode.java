@@ -17,7 +17,7 @@ public class LNode{
     public int getValue(){
 	return value;
     }
-    public int getNext(){
+    public LNode getNext(){
 	return next;
     }
 

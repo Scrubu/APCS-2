@@ -2,6 +2,7 @@ public class MyLinkedList{
     private LNode head;
     private LNode last;
     private LNode current;
+    private int size;
 
 
     public String toString(){
@@ -15,13 +16,14 @@ public class MyLinkedList{
     }
 
     public void setLast(){
+	LNode temp = head;
 	try{
-	    LNode temp = head;
+	  
 	while(temp.getNext() != null){
-	    temp.setNext(temp.getNext()+1);
+	    temp.setNext(temp.getNext().getNext());
 	}
 	last = temp.getNext();
-	    }catch(IndexOutofBoundsException e){
+	    }catch(IndexOutOfBoundsException e){
 	    last = temp;
 	}
     }
@@ -29,18 +31,18 @@ public class MyLinkedList{
     public boolean add(int x){//not all lists have enough capacity may return false
 	try{
 	    last.setValue(x);
-	}catch(IndexOutofBoundsException e){
+	    size +=1;
+	    return true;
+	}catch(IndexOutOfBoundsException e){
 	    return false;
 	}
     }
 
+    public boolean remove(int x){
+
+    }
+
     public int size(){
-	int indexSize=0;
-	LNode temp = head;
-	while(temp != null){
-	    indexSize+=1;
-	    temp = temp.getNext();
-	}
-	return indexSize;
+	return size;
     }
 }
