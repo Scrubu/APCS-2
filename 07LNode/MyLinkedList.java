@@ -38,8 +38,8 @@ public class MyLinkedList{
 	}
     }
 
-    public boolean remove(int x){
-
+    public boolean remove(int index){
+	
     }
 
     public int size(){
