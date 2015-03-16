@@ -1,23 +1,37 @@
-public class LNode{
-    private LNode next;
-    private int value;
+public class LNode<T>{
+    private LNode<T> next;
+    private T value;
 
+
+    public LNode(){
+	this(-1);
+    }
+
+    public LNode(T number){
+	this(number, null);
+    }
+    //first parameter is the value of the node
+    //second is the next LNode it is linked to 
+    public LNode(T number, LNode<T> nex){
+	value=number;
+	next=nex;
+    }
 
     public String toString(){
-	String ans="";
+	String ans=""+value;
 	return ans;
     }
  
-    public void setNext(LNode n){
+    public void setNext(LNode<T> n){
 	next = n;
     }
-    public void setValue(int num){
+    public void setValue(T num){
 	value = num;
     }
-    public int getValue(){
+    public T getValue(){
 	return value;
     }
-    public LNode getNext(){
+    public LNode<T> getNext(){
 	return next;
     }
 
