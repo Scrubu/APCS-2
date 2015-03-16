@@ -26,7 +26,7 @@ public class Sort{
 	for(int i=ar.length/2;i<ar.length;i++){
 	    b[i-(ar.length/2)]=ar[i];
 	}
-	return merge(mergeSort(a),mergeSort(b));
+	return merge(quickSort(a),quickSort(b));
     }
 
     public int[] merge(int[] a, int[] b){
