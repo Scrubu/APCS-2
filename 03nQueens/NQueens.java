@@ -28,9 +28,9 @@ public class NQueens{
     public boolean solve(){
 	return solve(0);
     }
-    public boolean solve(int x){
+    /*  public boolean solve(int x){
 	return solve(x,0,0);
-    }
+	}*/
    
     public boolean czech(int x, int y){
 	for(int a=0; a < board.length; a++){
@@ -85,70 +85,13 @@ public class NQueens{
 	return true;
     }
 
+   
 
 
-    public boolean solve(int x,int y,int QueenNumber){
-	System.out.println(this);
-	if ( QueenNumber == board.length ) {
-	    return true;
-	}
-	if ( goodSquare(x,y) && inBounds(x,y ) ){
-	    board[x][y]='q';
-	    if ( solve(0,y+1,QueenNumber+1) ) {
-		return true;
-	    }
-	    board[x][y]='_';
-	}
-	if ( inBounds(x,y) ) {
-	    return solve(x+1,y,QueenNumber);
-	}
-	return false;
-    }
-    public boolean goodSquare(int x, int y){
-	for ( int across = -board.length ; across < board.length ; across ++ ) {
-	    if ( inBounds ( x + across , y ) ){
-		if ( board[x+across][y]=='q' ){
-		    return false;
-		}
-	    }
-	}
-	for ( int vertical = -board.length ; vertical < board.length ; vertical ++ ) {
-	    if ( inBounds ( x, y+vertical ) ){
-		if ( board[x][y+vertical]=='q' ){
-		    return false;
-		}
-	    }
-	}
-	for ( int both = -board.length ; both < board.length ; both ++ ) {
-	    if ( inBounds(x+both,y+both) ) {
-		if ( board[x+both][y+both]=='q' ){
-		    return false;
-		}
-	    }
-	}
-	for ( int both = -board.length ; both < board.length ; both ++ ) {
-	    if ( inBounds(x+both,y-both) ) {
-		if ( board[x+both][y-both]=='q' ){
-		    return false;
-		}
-	    }
-	}
-	return true;
-    }
-    public boolean inBounds(int x, int y){
-	if ( x < 0 || y < 0 || x >= board.length || y >= board.length ) {
-	    return false;
-	}
-	return true;
-    }
-
-
-
-
-    /*   public boolean solve(int column){
-	if(board[4][0]=='q'){
-	System.out.println(this);
-	}
+    public boolean solve(int column){
+	//if(board[4][0]=='q'){
+	//    System.out.println(this);
+	//}
 	if(column>=board.length){
 	    return true;
 	}
@@ -161,11 +104,14 @@ public class NQueens{
 		board[x][column]='q';
 		if(!solve(column+1)){
 		    board[x][column]='-';
-		}	    
+		}
+		else{
+		    return true;
+		}
 	    }
 	}
 	return false;
-	}*/
+	}
 
 
 
