@@ -5,66 +5,34 @@ import java.util.ArrayList;
 
 public class Sort{
 
-  public int[] quickSort(int[] ar){
-	if(ar.length<=1){
-	    return ar;
+
+
+    public  void quickSort(int[] ary){
+	quickSort(ary,0,ary.length);
+    }
+    public  void quickSort(int[] ary,int s,int e){
+	if(s != e -1 && s != e){
+	    int pivot = (int)(Math.random()*(e-s))+s;
+	    int cStart = s;
+	    int cEnd = e - 1;
+	    int swap = ary[pivot];
+	    ary[pivot] = ary[cEnd];
+	    ary[cEnd] = swap;
+	    while(cStart != cEnd){
+		for(;cStart != cEnd && ary[cStart] <= ary[e-1];cStart++);
+		for(;cStart != cEnd && ary[cEnd] >= ary[e-1];cEnd--);
+		swap = ary[cEnd];
+		ary[cEnd] = ary[cStart];
+		ary[cStart] = swap;
+	    }
+	    swap = ary[e-1];
+	    ary[e-1] = ary[cStart];
+	    ary[cStart] = swap;
+	    quickSort(ary,s,cStart);
+	    quickSort(ary,cStart+1,e);
 	}
-	int[] a;
-	int[] b;
-	if(ar.length%2==0){
-	    a=new int[ar.length/2];
-	    b=new int[ar.length/2];
-	}
-	else{
-	    a=new int[ar.length/2];
-	    b=new int[ar.length-(a.length)];
-	}
-	
-	for(int i =0;i<ar.length/2;i++){
-	    a[i]=ar[i];
-	}
-	for(int i=ar.length/2;i<ar.length;i++){
-	    b[i-(ar.length/2)]=ar[i];
-	}
-	return merge(quickSort(a),quickSort(b));
     }
 
-    public int[] merge(int[] a, int[] b){
-	int[] result = new int[a.length+b.length];
-	
-	int i, ai, bi;
-	i = ai = bi = 0;
-	while(ai<a.length && bi<b.length){
-	    if(a[ai] < b[bi]){
-		result[i]=a[ai];
-		ai++;
-	    }
-	    else{
-		result[i]=b[bi];
-		bi++;
-	    }
-	    i++;
-	}
-	if(ai < bi){
-	    while(ai<a.length){
-		result[i]=a[ai];
-		i++;
-		ai++;
-	    }
-	}
-	else{
-	    while(bi<b.length){
-		result[i]=b[bi];
-		i++;
-		bi++;
-	    }
-	}  
-    
-    return result;
-    }
-
-   
-}
 
 
     public static String name(){
