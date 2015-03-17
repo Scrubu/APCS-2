@@ -1,20 +1,24 @@
-public class MyLinkedList{
-    private LNode head;
-    private LNode last;
-    private LNode current;
+public class MyLinkedList<T>{
+    private LNode<T> head;
+    private LNode<T> last;
+    private LNode<T> current;
     private int size;
 
+    public String name(){
+	return "lai.kyle";
+    }
+    
     public MyLinkedList(){
-	head = new LNode();
-	last = head;
+	head = new LNode<T>();
+	setLast();
 	size = 0;
     }
 
-
+    
 
     public String toString(){
 	String ans = "[ ";
-	LNode temp = head;
+	LNode<T> temp = head;
 	while(temp != null){
 	    ans+=temp.getValue() +", ";
 	    temp = temp.getNext();
@@ -38,10 +42,10 @@ public class MyLinkedList{
     public boolean add(T x){//not all lists have enough capacity may return false
 	try{
 	    if(last.getValue() ==null){
-	    last.set(x);
+	    last.setValue(x);
 	    }
 	    else{
-		LNode<T> now = new LNode(x);
+		LNode<T> now = new LNode<T>(x);
 		last.setNext(now);
 		size +=1;
 	    }
@@ -49,6 +53,43 @@ public class MyLinkedList{
 	}catch(IndexOutOfBoundsException e){
 	    return false;
 	}
+    }
+
+    public boolean add(T x, int index){
+	if(index >= size || index < 0){
+	    return false;
+	}
+	int currentIndex = 0;
+	LNode<T> newNode = new LNode<T>(x);
+	LNode<T> currentNode = head;
+	LNode<T> nextNode = currentNode.getNext();
+	while(currentIndex != index-1){
+	    currentNode = nextNode;
+	    nextNode = currentNode.getNext();
+	    currentIndex +=1;
+	}
+	currentNode.setNext(newNode);
+	newNode.setNext(nextNode);
+	size+=1;
+	return true;
+    }
+
+    public int indexOf(T value){
+	
+	int currentIndex = 0;
+	LNode<T> currentNode = head;
+	LNode<T> nextNode = currentNode.getNext();
+	while(currentIndex < size){
+	    if(currentNode.getValue() != value){
+		currentNode = nextNode;
+		nextNode = currentNode.getNext();
+		currentIndex += 1;
+	    }
+	    else{
+		return currentIndex;
+	    }
+	}
+	return -1;
     }
 
     public boolean remove(int index){
@@ -65,6 +106,7 @@ public class MyLinkedList{
 	}
 	currentNode.setNext(nextNode.getNext());
 	size -= 1;
+	return true;
     }
 
     public int size(){

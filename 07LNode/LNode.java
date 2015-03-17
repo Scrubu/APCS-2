@@ -2,9 +2,12 @@ public class LNode<T>{
     private LNode<T> next;
     private T value;
 
+    public String name(){
+	return "lai.kyle";
+    }
 
     public LNode(){
-	this(-1);
+	this(null);
     }
 
     public LNode(T number){
