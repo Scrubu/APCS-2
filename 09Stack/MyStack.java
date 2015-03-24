@@ -1,29 +1,26 @@
-public class MyStack{
-    private LNode<T> stack;
-    private LNode<T> end;
+import java.util.*;
+public class MyStack<T>{
+    private MyLinkedList<T> stack;
+    private T value;
     public MyStack(){
-	stack= new LNode();
-	end = stack;
+	stack = new MyLinkedList<T>();
+	value = stack.get(stack.size()-1);
     }
-    public boolean empty(){
-	return stack.getValue() == null;
-    }
+   
     public void push(T x){
-	if(empty()){
-	    stack.setValue(x);
-	}
-	LNode<T> next = new LNode(x);
-	end = next;
-	stack.setNext(end);
-
+	stack.add(x);
+	value = stack.get(stack.size()-1);
     }
-    public int pop(){
-	if(empty()){
-	    throw new EmptyStackException();
+    public T pop(){
+	if(stack.remove(stack.size()-1)){
+	    T x = value;
+	    value = stack.get(stack.size()-1);
+	    return x;
 	}
-	num = end.getValue();
-	return num;
+	    return null;
     }
-
+    public T peek(){
+	return value;
+    }
     
 }

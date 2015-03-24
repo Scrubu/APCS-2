@@ -1,10 +1,11 @@
+import java.util.*;
 public class MyLinkedList<T> implements Iterable<T>{
     private LNode<T> head;
     private LNode<T> last;
     private LNode<T> current;
     private int size;
 
-    public class MyLinkedListIterator<T> implements Iterator<T>{
+    public class MyLinkedListIterator implements Iterator<T>{
 	private LNode<T> now;
 	public MyLinkedListIterator(LNode<T> now) {
 	    this.now = now;
@@ -22,6 +23,11 @@ public class MyLinkedList<T> implements Iterable<T>{
 	}
     }
 
+    public Iterator<T> iterator(){
+	MyLinkedListIterator it =new MyLinkedListIterator(head);
+	return  it;
+    }
+
     public String name(){
 	return "lai.kyle";
     }
@@ -33,7 +39,16 @@ public class MyLinkedList<T> implements Iterable<T>{
     }
 
     
-
+    public T get(int index){
+	if(index < 0 || index >= size()){
+	    throw new IndexOutOfBoundsException();
+	}
+	LNode<T> now = head.getNext();
+	for(int i = 0;i < index;i++){
+	    now = now.getNext();
+	}
+	return now.getValue();
+    }
     public String toString(){
 	String ans = "[ ";
 	LNode<T> temp = head;
