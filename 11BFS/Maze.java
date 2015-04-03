@@ -89,8 +89,8 @@ private String go(int x,int y){
 
     public boolean solveBFS(boolean animate){
 	Frontier current = new Frontier(starty, startx);
-	frontier.addFirst(current);
-	while(!frontier.isEmpty()|| maze[frontier.getLast().getV()][frontier.getLast().getH()]=='E'){
+	frontier.addLast(current);
+	while(!frontier.isEmpty()|| maze[frontier.getHead().getV()][frontier.getHead().getH()]=='E'){
 	    if(valid(current.getV(),current.getH(),"up")){
 		current.setV(current.getV()-1);
 		frontier.addLast(current);
@@ -100,15 +100,14 @@ private String go(int x,int y){
 		frontier.addLast(current);
 	    }
 	    if(valid(current.getV(),current.getH(),"left")){
-		current.setV(current.getH()-1);
+		current.setH(current.getH()-1);
 		frontier.addLast(current);
 	    }
 	    if(valid(current.getV(),current.getH(),"right")){
-		current.setV(current.getH()+1);
+		current.setH(current.getH()+1);
 		frontier.addLast(current);
 	    }
-	    if(frontier.getHead)
-
+	    frontier.removeFirst(frontier.getHead());
 	}
     }
     public int[] solutionArray(){
