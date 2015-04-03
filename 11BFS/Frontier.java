@@ -20,4 +20,8 @@ public class Frontier{
     public int getV(){
 	return vertical;
     }
+    public String toString(){
+	String ans = "[" + vertical + "," +horizontal +"]";
+	return ans;
+    }
 }
