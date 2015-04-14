@@ -16,12 +16,9 @@ private String go(int x,int y){
 
     public Maze(String filename){
 	frontier = new FrontierDeque();
-	startx = -1;
-	starty = -1;
 	String ans = "";
 	try{
 	    Scanner in = new Scanner(new File(filename));
-
 	    //keep reading next line
 	    while(in.hasNext()){
 		String line= in.nextLine();
@@ -33,6 +30,7 @@ private String go(int x,int y){
 		maxy++;
 		ans+=line;
 	    }
+	
 	}
 	catch(Exception e){
 	    System.out.println("File: "+filename+" could not be opened.");
@@ -90,55 +88,67 @@ private String go(int x,int y){
     public boolean solveBFS(boolean animate){
 	Frontier current = new Frontier(starty, startx);
 	frontier.addLast(current);
-	while(!frontier.isEmpty()|| maze[frontier.getHead().getV()][frontier.getHead().getH()]=='E'){
+	while(!frontier.isEmpty()&& !(maze[frontier.getHead().getV()][frontier.getHead().getH()]=='E')){
 	    System.out.println(frontier);
 	    System.out.println();
 
 	    if(valid(frontier.getHead().getV(),frontier.getHead().getH(),"up")){
 		Frontier sub = new Frontier(frontier.getHead().getV(),frontier.getHead().getH());
 		sub.setV(sub.getV()-1);
-	
+		sub.setP(frontier.getHead());
 		frontier.addLast(sub);
 	    }
 	    
 	    if(valid(frontier.getHead().getV(),frontier.getHead().getH(),"down")){
 		Frontier sub = new Frontier(frontier.getHead().getV(),frontier.getHead().getH());
 		sub.setV(sub.getV()+1);
-	        
+		sub.setP(frontier.getHead());
 		frontier.addLast(sub);
 	    }
 	  
 	    if(valid(frontier.getHead().getV(),frontier.getHead().getH(),"left")){
 		Frontier sub = new Frontier(frontier.getHead().getV(),frontier.getHead().getH());
 		sub.setH(sub.getH()-1);
-		
+		sub.setP(frontier.getHead());
 		frontier.addLast(sub);
 	    }
 	  
 	    if(valid(frontier.getHead().getV(),frontier.getHead().getH(),"right")){
 		Frontier sub = new Frontier(frontier.getHead().getV(),frontier.getHead().getH());
 		sub.setH(sub.getH()+1);
-		
+		sub.setP(frontier.getHead());
 		frontier.addLast(sub);
 	    }
-	    if(maze[frontier.getHead().getV()][frontier.getHead().getH()]!='E'){
-		maze[frontier.getHead().getV()][frontier.getHead().getH()]='*';
-	    }
-	    else{
-		return true;
-	    }
+	    maze[frontier.getHead().getV()][frontier.getHead().getH()]='*';
 	    frontier.removeFirst();
-	    if(animate){
+	     if(animate){
 		System.out.println(this);
 	    }
-	    //System.out.println(frontier.getS());
 	}
-	
+	if(maze[frontier.getHead().getV()][frontier.getHead().getH()]=='E'){
+	    solutionArray();
+	    return true;
+	}
 	return false;
     }
-    public int[] solutionArray(){
-	int[] sol= new int[2];
-	return sol;
+
+    public void solutionArray(){
+	FrontierDeque ans=new FrontierDeque();
+	Frontier current = frontier.getHead();
+	Frontier p;
+	String result = "";
+	while(!(current.getH()==startx && current.getV()==starty)){
+	    ans.addLast(current);
+	    current=current.getP();
+	}
+	ans.addLast(current);
+	while(ans.getTail()!=null){
+
+	    p = ans.getTail();
+	    result+= "(" + p.getV() + "," + p.getH() + ")";
+	    ans.removeTail();
+	}
+	System.out.println(result);
     }
 
 
@@ -163,7 +173,7 @@ private String go(int x,int y){
 	return false;
     }
     public static void main(String[]args){
-	Maze x = new Maze("data3.dat");
+	Maze x = new Maze("data1.dat");
 	System.out.println(x.solveBFS(true));
     }
 }

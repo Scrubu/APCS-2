@@ -77,6 +77,16 @@ public class FrontierDeque{
 	    head++;
 	}
     }
+    public void removeTail(){
+	ary[tail]=null;
+	size--;
+	if(tail-1 < 0){
+	    tail = ary.length-1;
+	}
+	else{
+	    tail--;
+	}
+    }
     public boolean isEmpty(){
 	return size==0;
     }
