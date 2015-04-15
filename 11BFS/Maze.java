@@ -80,18 +80,21 @@ private String go(int x,int y){
 	    return toString();
 	}
     }
-    
+    /*
+    public boolean solveDFS(){
+	frontier.setMode(1);
+	return solveDFS(false);
+    }
+*/
     public boolean solveBFS(){
+	frontier.setMode(0);
 	return solveBFS(false);
     }
-
+   
     public boolean solveBFS(boolean animate){
 	Frontier current = new Frontier(starty, startx);
 	frontier.addLast(current);
 	while(!frontier.isEmpty()&& !(maze[frontier.getHead().getV()][frontier.getHead().getH()]=='E')){
-	    System.out.println(frontier);
-	    System.out.println();
-
 	    if(valid(frontier.getHead().getV(),frontier.getHead().getH(),"up")){
 		Frontier sub = new Frontier(frontier.getHead().getV(),frontier.getHead().getH());
 		sub.setV(sub.getV()-1);
@@ -121,8 +124,10 @@ private String go(int x,int y){
 	    }
 	    maze[frontier.getHead().getV()][frontier.getHead().getH()]='*';
 	    frontier.removeFirst();
+	    System.out.println(frontier);
 	     if(animate){
 		System.out.println(this);
+		
 	    }
 	}
 	if(maze[frontier.getHead().getV()][frontier.getHead().getH()]=='E'){
@@ -167,13 +172,13 @@ private String go(int x,int y){
 	if(direction.equals("down")){
 	    dicks = maze[vertical+1][horizontal];
 	}
-	if(dicks != '#' && dicks != '*'){
+	if(dicks != '#' && dicks!='*'){
 	    return true;
 	}
 	return false;
     }
     public static void main(String[]args){
-	Maze x = new Maze("data1.dat");
+	Maze x = new Maze("data3.dat");
 	System.out.println(x.solveBFS(true));
     }
 }
