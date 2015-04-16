@@ -74,16 +74,18 @@ public class FrontierDeque{
 	add(p);
     }
     public void add(Frontier value){
-	if(mode==1){
+	if(mode == 1){
 	    addFirst(value);
-	}else{
+	}
+	else{
 	    addLast(value);
 	}
     }
     public void add(int value){
-	if(mode==0){
+	if(mode == 1){
 	    addFirst(value);
-	}else{
+	}
+	else{
 	    addLast(value);
 	}
     }
@@ -124,15 +126,11 @@ public class FrontierDeque{
     public void addLast(int value){
 	 priority[tail]=value;
      }
-    public void remove(){
-	if(mode == 0){
-	    removeFirst();
-	}
-	else{
-	    removeTail();
-	}
+    public Frontier remove(){
+	return removeFirst();
     }
-    public void removeFirst(){
+    public Frontier removeFirst(){
+	Frontier ret = ary[head];
 	ary[head]=null;
 	if(priorityDeque)
 	    priority[head]=0;
@@ -143,8 +141,10 @@ public class FrontierDeque{
 	else{
 	    head++;
 	}
+	return ret;
     }
     public void removeTail(){
+	//	Frontier ret = ary[tail];
 	ary[tail]=null;
 	if(priorityDeque)
 	    priority[tail]=0;
@@ -155,6 +155,7 @@ public class FrontierDeque{
 	else{
 	    tail--;
 	}
+	//return ret;
     }
     public boolean isEmpty(){
 	return size==0;
