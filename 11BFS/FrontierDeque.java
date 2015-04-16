@@ -121,9 +121,17 @@ public class FrontierDeque{
 	ary[tail]=value;
 	size++;
     }
-     public void addLast(int value){
+    public void addLast(int value){
 	 priority[tail]=value;
      }
+    public void remove(){
+	if(mode == 0){
+	    removeFirst();
+	}
+	else{
+	    removeTail();
+	}
+    }
     public void removeFirst(){
 	ary[head]=null;
 	if(priorityDeque)
