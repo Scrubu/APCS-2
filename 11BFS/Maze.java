@@ -5,6 +5,7 @@ public class Maze{
     private char[][]maze;
     private int maxx,maxy;
     private int startx,starty;
+    private int endx,endy;
     int mode;
     private static final String clear =  "\033[2J";
     private static final String hide =  "\033[?25l";
@@ -43,6 +44,11 @@ private String go(int x,int y){
 	for(int i=0;i<ans.length();i++){
 	    char c = ans.charAt(i);
 	    maze[i%maxx][i/maxx]= c;
+	    if(c=='E'){
+		endx=i%maxx;
+		endy=i/maxx;
+		frontier.setEnd(endx,endy);
+	    }
 	    if(c=='S'){
 		startx = i%maxx;
 		starty = i/maxx;
@@ -90,7 +96,7 @@ private String go(int x,int y){
     public boolean solveDFS(boolean animate){
 	frontier.setMode(1);
 	mode = 1;
-	return solve(true);
+	return solve(animate);
     }
     
     public boolean solveBFS(){
@@ -101,9 +107,25 @@ private String go(int x,int y){
     public boolean solveBFS(boolean animate){
 	frontier.setMode(0);
 	mode = 0;
-	return solve(true);
+	return solve(animate);
     }
-  public static void delay(int x){
+    public boolean solveBest(){
+	frontier.setMode(2);
+	return solve(false);
+    }
+    public boolean solveA(){
+	frontier.setMode(3);
+	return solve(false);
+    }
+    public boolean solveBest(boolean animate){
+	frontier.setMode(2);
+	return solve(animate);
+    }
+    public boolean solveA(boolean animate){
+	frontier.setMode(3);
+	return solve(animate);
+    }
+    public static void delay(int x){
 	try {
 	    Thread.sleep(1000*x);                
 	} catch(InterruptedException ex) {
@@ -115,14 +137,20 @@ private String go(int x,int y){
 	Frontier current = new Frontier(starty, startx);
 	frontier.add(current);
 	while(!frontier.isEmpty()&& !(maze[current.getV()][current.getH()]=='E')){
+	    System.out.println(frontier);
+	    System.out.println(frontier.getHead());
+	    System.out.println(frontier.getTail());
 	    current = frontier.remove();
+	    System.out.println("dicks");
+	     System.out.println(frontier);
+	    System.out.println(frontier.getHead());
+	    System.out.println(frontier.getTail());
 	    if(valid(current.getV(),current.getH(),"up")){
 		Frontier sub = new Frontier(current.getV(),current.getH());
 		sub.setV(sub.getV()-1);
 		sub.setP(current);
 		frontier.add(sub);
 	    }
-	    
 	    if(valid(current.getV(),current.getH(),"down")){
 		Frontier sub = new Frontier(current.getV()+1,current.getH());
 		sub.setP(current);
@@ -161,6 +189,7 @@ private String go(int x,int y){
 	    if(animate){
 		System.out.println(frontier);
 		System.out.println(this);
+
             }
 	}
 	return false;
@@ -187,6 +216,6 @@ private String go(int x,int y){
     }
     public static void main(String[]args){
 	Maze x = new Maze("data1.dat");
-	System.out.println(x.solveDFS(true));
+	System.out.println(x.solveBest(true));
     }
 }

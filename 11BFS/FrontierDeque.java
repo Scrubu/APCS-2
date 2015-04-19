@@ -4,28 +4,47 @@ public class FrontierDeque{
     private Frontier[]ary;
     private int[]priority;
     private int size,head,tail,mode;
+    private int endX,endY;
     boolean priorityDeque = false;
     public FrontierDeque(){
 	ary = new Frontier[5];
+	priority = new int[5];
 	size = 0;
 	head = 1;
 	tail = 0;
     }
-    public void removeSmallest(){
-	int minimum = priority[0];
-	int minIndex= 0;
-	for(int i=1; i < priority.length; i++){
+    public Frontier removeSmallest(){
+	int minimum = priority[head];
+	int minIndex= head;
+	Frontier ans;
+	for(int i=head; i!=tail; i++){
+	    if(i > priority.length){
+		i = 0;
+	    }
 	    if(minimum > priority[i]){
 		minimum = priority[i];
 		minIndex = i;
 	    }
-	    priority[minIndex]=priority[tail];
+	}
+	if(ary[tail]==ary[minIndex]){
+	    ans = ary[minIndex];
 	    removeTail();
 	}
+	else{
+	ans = ary[minIndex];
+	priority[minIndex]=priority[tail];
+	ary[minIndex]=removeTail();
+	}
+	return ans;
     }
-
+    public void setEnd(int x, int y){
+	endX=x;
+	endY=y;
+    }
     public void setMode(int m){
 	mode = m;
+	if(mode > 1)
+	    priorityDeque=true;
     }
     public int getS(){
 	return size;
@@ -43,8 +62,9 @@ public class FrontierDeque{
     public void resize(){
 	Frontier[] replace = new Frontier[ary.length*2];
 	int[] replace2=new int[5];
-	if(priorityDeque)
+	if(priorityDeque){
 	    replace2 = new int[priority.length*2];
+	}
 	int current = head;
 	int index = 0;
 	while(current != tail){
@@ -70,15 +90,19 @@ public class FrontierDeque{
        	ary = replace;
     }
     public void add(Frontier value, int p){
-	add(value);
+	addLast(value);
 	add(p);
     }
     public void add(Frontier value){
 	if(mode == 1){
 	    addFirst(value);
-	}
-	else{
+	} else if(mode == 0){
 	    addLast(value);
+	} else if(mode == 2){
+	    add(value,Math.abs(value.getH()-endX)+Math.abs(value.getV()-endY));
+		
+	} else if(mode == 3){
+	    add(value,Math.abs(value.getH()-endX)+Math.abs(value.getV()-endY+value.getSize()));
 	}
     }
     public void add(int value){
@@ -127,7 +151,12 @@ public class FrontierDeque{
 	 priority[tail]=value;
      }
     public Frontier remove(){
-	return removeFirst();
+	if(mode<2){
+	    return removeFirst();
+	}
+	else{
+	    return removeSmallest();
+	}
     }
     public Frontier removeFirst(){
 	Frontier ret = ary[head];
@@ -143,8 +172,8 @@ public class FrontierDeque{
 	}
 	return ret;
     }
-    public void removeTail(){
-	//	Frontier ret = ary[tail];
+    public Frontier removeTail(){
+	Frontier ret = ary[tail];
 	ary[tail]=null;
 	if(priorityDeque)
 	    priority[tail]=0;
@@ -155,19 +184,44 @@ public class FrontierDeque{
 	else{
 	    tail--;
 	}
-	//return ret;
+	return ret;
     }
     public boolean isEmpty(){
 	return size==0;
     }
     public String toString(){
 	String ans="";
+	String a="";
 	for(int i = 0; i < ary.length; i++){
 	    ans+= " "+ary[i];
 
 
 	}
-	return ans;
-    }
+	for(int i = 0; i < ary.length; i++){
+	    a+= " "+priority[i];
 
+
+	}
+	return ans + "\n" +a;
+    }
+    public static void main(String[]args){
+	FrontierDeque john = new FrontierDeque();
+	Frontier a = new Frontier(0,1);
+	Frontier b = new Frontier(0,2);
+	Frontier c = new Frontier(27,5);
+	Frontier d = new Frontier(5,2);
+	Frontier e = new Frontier(2,5);
+	john.setEnd(5,7);
+
+	
+	john.setMode(2);
+	john.add(a,4);
+	john.add(b,1);
+	john.add(d,25);
+	john.add(e,4);
+	System.out.println(john);
+	john.remove();
+	System.out.println(john);
+	john.remove();
+    }
 }

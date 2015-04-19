@@ -2,8 +2,8 @@ import java.util.*;
 public class Frontier{
     int vertical;
     int horizontal;
-
-    Frontier previous;
+    int size=0;
+    Frontier previous=null;
 
     public Frontier(int v, int h){
 	vertical = v;
@@ -11,6 +11,10 @@ public class Frontier{
     }
     public void setP(Frontier p){
 	previous = p;
+	size=p.getSize()+1;
+    }
+    public int getSize(){
+	return size;
     }
     public void setH(int h){
 	horizontal = h;
