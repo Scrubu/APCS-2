@@ -69,7 +69,7 @@ private String go(int x,int y){
 	    }
 	    ans += maze[i%maxx][i/maxx];
 	}
-	return ans;
+	return hide+go(0,0)+ans+"\n"+show;
     }
     
     public String toString(boolean animate){
@@ -113,7 +113,7 @@ private String go(int x,int y){
 	frontier.setMode(2);
 	return solve(false);
     }
-    public boolean solveA(){
+    public boolean solveAstar(){
 	frontier.setMode(3);
 	return solve(false);
     }
@@ -121,7 +121,7 @@ private String go(int x,int y){
 	frontier.setMode(2);
 	return solve(animate);
     }
-    public boolean solveA(boolean animate){
+    public boolean solveAstar(boolean animate){
 	frontier.setMode(3);
 	return solve(animate);
     }
@@ -137,38 +137,36 @@ private String go(int x,int y){
 	Frontier current = new Frontier(starty, startx);
 	frontier.add(current);
 	while(!frontier.isEmpty()&& !(maze[current.getV()][current.getH()]=='E')){
-	    System.out.println(frontier);
-	    System.out.println(frontier.getHead());
-	    System.out.println(frontier.getTail());
+	   
 	    current = frontier.remove();
-	    System.out.println("dicks");
-	     System.out.println(frontier);
-	    System.out.println(frontier.getHead());
-	    System.out.println(frontier.getTail());
 	    if(valid(current.getV(),current.getH(),"up")){
 		Frontier sub = new Frontier(current.getV(),current.getH());
 		sub.setV(sub.getV()-1);
 		sub.setP(current);
 		frontier.add(sub);
+		maze[sub.getV()][sub.getH()]='*';
 	    }
 	    if(valid(current.getV(),current.getH(),"down")){
 		Frontier sub = new Frontier(current.getV()+1,current.getH());
 		sub.setP(current);
 		frontier.add(sub);
+		maze[sub.getV()][sub.getH()]='*';
 	    }
 	  
 	    if(valid(current.getV(),current.getH(),"left")){
 		Frontier sub = new Frontier(current.getV(),current.getH()-1);
 		sub.setP(current);
 		frontier.add(sub);
+		maze[sub.getV()][sub.getH()]='*';
 	    }
 	  
 	    if(valid(current.getV(),current.getH(),"right")){
 		Frontier sub = new Frontier(current.getV(),current.getH()+1);
 		sub.setP(current);
 		frontier.add(sub);
+		maze[sub.getV()][sub.getH()]='*';
 	    }
-	    if(maze[current.getV()][current.getH()]=='E'){
+	    if(current.getV()== endx && current.getH()==endy){
 		 FrontierDeque ans=new FrontierDeque();
 		 Frontier p;
 		 String result = "";
@@ -187,6 +185,7 @@ private String go(int x,int y){
 	     }
 	    maze[current.getV()][current.getH()]='*';
 	    if(animate){
+		//delay(1);
 		System.out.println(frontier);
 		System.out.println(this);
 
@@ -212,10 +211,10 @@ private String go(int x,int y){
 	if(direction.equals("down")){
 	    dicks = maze[vertical+1][horizontal];
 	}
-	return dicks != '#' && dicks!='*';
+	return dicks == ' ' || dicks=='E';
     }
     public static void main(String[]args){
-	Maze x = new Maze("data1.dat");
-	System.out.println(x.solveBest(true));
+	Maze x = new Maze("data3.dat");
+	System.out.println(x.solveAstar(true));
     }
 }

@@ -17,13 +17,15 @@ public class FrontierDeque{
 	int minimum = priority[head];
 	int minIndex= head;
 	Frontier ans;
-	for(int i=head; i!=tail; i++){
-	    if(i > priority.length){
-		i = 0;
-	    }
+	int i= head;
+	while(i!=tail){
 	    if(minimum > priority[i]){
 		minimum = priority[i];
 		minIndex = i;
+	    }
+	    i++;
+	    if(i >= priority.length){
+		i = 0;
 	    }
 	}
 	if(ary[tail]==ary[minIndex]){
@@ -191,18 +193,12 @@ public class FrontierDeque{
     }
     public String toString(){
 	String ans="";
-	String a="";
 	for(int i = 0; i < ary.length; i++){
 	    ans+= " "+ary[i];
 
 
 	}
-	for(int i = 0; i < ary.length; i++){
-	    a+= " "+priority[i];
-
-
-	}
-	return ans + "\n" +a;
+	return ans;
     }
     public static void main(String[]args){
 	FrontierDeque john = new FrontierDeque();
@@ -211,6 +207,8 @@ public class FrontierDeque{
 	Frontier c = new Frontier(27,5);
 	Frontier d = new Frontier(5,2);
 	Frontier e = new Frontier(2,5);
+	Frontier f = new Frontier(5,2);
+	Frontier g = new Frontier(2,5);
 	john.setEnd(5,7);
 
 	
@@ -218,10 +216,13 @@ public class FrontierDeque{
 	john.add(a,4);
 	john.add(b,1);
 	john.add(d,25);
-	john.add(e,4);
+	john.add(e,7);
+	john.add(f,55);
+	john.add(g,2);
 	System.out.println(john);
 	john.remove();
 	System.out.println(john);
 	john.remove();
+	System.out.println(john);
     }
 }
