@@ -6,8 +6,8 @@ public class BTree<E> {
     public static final int PRE_ORDER = 0;
     public static final int IN_ORDER = 1;
     public static final int POST_ORDER = 2;
-    
-
+    private int height;
+ 
     private TreeNode<E> root;
 
     public BTree() {
@@ -20,8 +20,11 @@ public class BTree<E> {
       
       Wrapper method for the recursive add()
       ====================*/     
-    public void add( E d ) { }
-
+    public void add( E d ) {
+	TreeNode<E> addTree = new TreeNode<E>(d);
+	add(root,addTree);
+    }
+    
     /*======== public void add() ==========
       Inputs:   TreeNode<E> curr, TreeNode<E> bn  
       Returns: 
@@ -34,6 +37,36 @@ public class BTree<E> {
       added to randomly.
       ====================*/
     private void add( TreeNode<E> curr, TreeNode<E> bn ) {
+	Random r = new Random();
+	int randomNum = r.nextInt(2);
+	if(curr==null){
+	    curr=bn;
+	}
+	else if(randomNum==0){
+	    if(curr.getLeft()==null){
+		curr.setLeft(bn);
+	    }
+	    else{
+		curr.setRight(bn);
+	    }
+	}
+	else if(randomNum==1){
+	    if(curr.getRight()==null){
+		curr.setRight(bn);
+	    }
+	    else{
+		curr.setLeft(bn);
+	    }
+	}	   
+	else{
+	    if(randomNum==0){
+		add(curr.getLeft(),bn);
+	    }
+	    else{
+		add(curr.getRight(),bn);
+	    }
+	    height++;
+	}
     }
     
     public void traverse( int mode) {
@@ -45,6 +78,7 @@ public class BTree<E> {
 	    postOrder( root );
 	System.out.println();
     }
+
     /*======== public void preOrder() ==========
       Inputs:   TreeNode<E> curr  
       Returns: 
@@ -53,9 +87,8 @@ public class BTree<E> {
       pre-order Traversal
       ====================*/
     public void preOrder( TreeNode<E> curr ) {
-    }
-
-
+	
+	    }
     /*======== public void inOrder() ==========
       Inputs:   TreeNode<E> curr  
       Returns: 
@@ -72,6 +105,7 @@ public class BTree<E> {
       
       Prints out the elements in the tree by doing a
       post-order Traversal    
+
       ====================*/
     public void postOrder( TreeNode<E> curr ) {
     }
@@ -83,7 +117,7 @@ public class BTree<E> {
       Wrapper for the recursive getHeight method
       ====================*/
     public int getHeight() {
-	return getHeight( root );
+	return height;
     }
     /*======== public int getHeight() ==========
       Inputs:   TreeNode<E> curr  
@@ -91,9 +125,16 @@ public class BTree<E> {
       
       ====================*/
     public int getHeight( TreeNode<E> curr ) {
-	return -1;
+	return heightHelp(root,curr,1);
     }
-
+    public int heightHelp(TreeNode<E> curr,TreeNode<E> desired, int level){
+	if(curr.equals(desired)){
+	    return level;
+	}
+	heightHelp(curr.getLeft(),desired, level+1);
+	heightHelp(curr.getRight(),desired, level+1);
+	return 0;
+    }
     /*======== public String getLevel() ==========
       Inputs:   TreeNode<E> curr
                 int level
@@ -103,6 +144,14 @@ public class BTree<E> {
       
       ====================*/
     private String getLevel( TreeNode<E> curr, int level, int currLevel ) {
+	String ans="";
+	if(currLevel == level){
+	    ans+=" "+curr.getData();
+	}
+	else{
+	    getLevel(curr.getLeft(), level, currLevel+1);
+	    getLevel(curr.getRight(), level, currLevel+1);
+	}
 	return "";
     }
     
@@ -121,10 +170,16 @@ public class BTree<E> {
       That is ok, but if you want a CHALLENGE, you can try to
       get the output to look nicer, something like this:
              0
+
           1      2
+
             3  4   5
+
       ====================*/
     public String toString() {
+	int exponent=1;
+	String ans="";
+	
 	return "";
     }
 	
