@@ -2,12 +2,9 @@ import java.io.*;
 import java.util.*;
 
 public class BTree<E> {
-
     public static final int PRE_ORDER = 0;
     public static final int IN_ORDER = 1;
     public static final int POST_ORDER = 2;
-    private int height;
- 
     private TreeNode<E> root;
 
     public BTree() {
@@ -20,52 +17,39 @@ public class BTree<E> {
       
       Wrapper method for the recursive add()
       ====================*/     
-    public void add( E d ) {
-	TreeNode<E> addTree = new TreeNode<E>(d);
-	add(root,addTree);
+    public void add( E d ) { 
+	if(root == null)
+	    root = new TreeNode<E>(d);
+	else
+	    add(root,new TreeNode<E>(d));
     }
-    
+
     /*======== public void add() ==========
       Inputs:   TreeNode<E> curr, TreeNode<E> bn  
       Returns: 
       
       Adds bn to the tree rooted at curr. If curr has 
       an available child space, then attach bn there.
-
       Otherwise, try to add at the subtree rooted at
       one of curr's children. Choose the child to be
       added to randomly.
       ====================*/
     private void add( TreeNode<E> curr, TreeNode<E> bn ) {
-	Random r = new Random();
-	int randomNum = r.nextInt(2);
-	if(curr==null){
-	    curr=bn;
-	}
-	else if(randomNum==0){
-	    if(curr.getLeft()==null){
+	int n = new Random().nextInt(2);
+	if(curr.getLeft() == null && curr.getRight() == null){
+	    if(n == 0)
 		curr.setLeft(bn);
-	    }
-	    else{
+	    else if(n == 1)
 		curr.setRight(bn);
-	    }
-	}
-	else if(randomNum==1){
-	    if(curr.getRight()==null){
-		curr.setRight(bn);
-	    }
-	    else{
-		curr.setLeft(bn);
-	    }
-	}	   
-	else{
-	    if(randomNum==0){
+	}else if(curr.getLeft() == null){
+	    curr.setLeft(bn);
+	}else if(curr.getRight() == null){
+	    curr.setRight(bn);
+	}else{
+	    if(n == 0)
 		add(curr.getLeft(),bn);
-	    }
-	    else{
+	    else if(n == 1)
 		add(curr.getRight(),bn);
-	    }
-	    height++;
 	}
     }
     
@@ -78,7 +62,6 @@ public class BTree<E> {
 	    postOrder( root );
 	System.out.println();
     }
-
     /*======== public void preOrder() ==========
       Inputs:   TreeNode<E> curr  
       Returns: 
@@ -87,8 +70,14 @@ public class BTree<E> {
       pre-order Traversal
       ====================*/
     public void preOrder( TreeNode<E> curr ) {
-	
-	    }
+	if(curr != null){
+	    System.out.println(curr);
+	    preOrder(curr.getLeft());
+	    preOrder(curr.getRight());
+	}
+    }
+
+
     /*======== public void inOrder() ==========
       Inputs:   TreeNode<E> curr  
       Returns: 
@@ -97,6 +86,11 @@ public class BTree<E> {
       in-order Traversal
       ====================*/
     public void inOrder( TreeNode<E> curr ) {
+	if(curr != null){
+	    inOrder(curr.getLeft());
+	    System.out.println(curr);
+	    inOrder(curr.getRight());
+	}
     }
 
     /*======== public void postOrder() ==========
@@ -105,19 +99,22 @@ public class BTree<E> {
       
       Prints out the elements in the tree by doing a
       post-order Traversal    
-
       ====================*/
     public void postOrder( TreeNode<E> curr ) {
+	if(curr != null){
+	    postOrder(curr.getLeft());
+	    postOrder(curr.getRight());
+	    System.out.println(curr);
+	}
     }
     
     /*======== public int getHeight()) ==========
       Inputs:   
       Returns: The height of the tree
-
       Wrapper for the recursive getHeight method
       ====================*/
     public int getHeight() {
-	return height;
+	return getHeight( root );
     }
     /*======== public int getHeight() ==========
       Inputs:   TreeNode<E> curr  
@@ -125,16 +122,15 @@ public class BTree<E> {
       
       ====================*/
     public int getHeight( TreeNode<E> curr ) {
-	return heightHelp(root,curr,1);
+	if(curr.getLeft() == null && curr.getRight() == null)
+	    return 1;
+	if(curr.getLeft() == null)
+	    return 1 + getHeight(curr.getRight());
+	if(curr.getRight() == null)
+	    return 1 + getHeight(curr.getLeft());
+	return 1 + Math.max(getHeight(curr.getLeft()),getHeight(curr.getRight()));
     }
-    public int heightHelp(TreeNode<E> curr,TreeNode<E> desired, int level){
-	if(curr.equals(desired)){
-	    return level;
-	}
-	heightHelp(curr.getLeft(),desired, level+1);
-	heightHelp(curr.getRight(),desired, level+1);
-	return 0;
-    }
+
     /*======== public String getLevel() ==========
       Inputs:   TreeNode<E> curr
                 int level
@@ -144,15 +140,11 @@ public class BTree<E> {
       
       ====================*/
     private String getLevel( TreeNode<E> curr, int level, int currLevel ) {
-	String ans="";
-	if(currLevel == level){
-	    ans+=" "+curr.getData();
-	}
-	else{
-	    getLevel(curr.getLeft(), level, currLevel+1);
-	    getLevel(curr.getRight(), level, currLevel+1);
-	}
-	return "";
+	if(curr == null)
+	    return "";
+	if(level != currLevel + 1)
+	    return getLevel(curr.getLeft(),level,currLevel+1) + getLevel(curr.getRight(),level,currLevel+1);
+	return curr.toString() + " ";
     }
     
     /*======== public String toString()) ==========
@@ -161,34 +153,28 @@ public class BTree<E> {
      
       This string should display each level as a separate line.
       A simple version might look something like this:
-
       0
       1 2
       3 4 5
-
       Note that you cannot tell exactly where 3, 4 and 5 lie.
       That is ok, but if you want a CHALLENGE, you can try to
       get the output to look nicer, something like this:
              0
-
           1      2
-
             3  4   5
-
       ====================*/
     public String toString() {
-	int exponent=1;
-	String ans="";
-	
-	return "";
+	int n = getHeight(root);
+	String ans = "";
+	for(int i = 1;i <= n;i++)
+	    ans += getLevel(root,i,0) + "\n";
+	return ans;
     }
-	
 
+    
     public static void main( String[] args ) {
-
 	BTree<Integer> t = new BTree<Integer>();
-
-	for ( int i=0; i < 8; i++ ) 
+	for ( int i=0; i < 3; i++ ) 
 	    t.add( i );
 	System.out.println( "Pre-order: ");
 	t.traverse( PRE_ORDER );
@@ -197,7 +183,6 @@ public class BTree<E> {
 	System.out.println( "Post-order: ");
 	t.traverse( POST_ORDER );
 	System.out.println( "Height: " + t.getHeight() );
-
 	System.out.println( t );
     }
 }
