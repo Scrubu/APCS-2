@@ -27,11 +27,14 @@ public class MyHeap{
     }
     public void add(int num){
 	heap.add(num);
-	int i=heap.getIndex(num);
+	int i=heap.indexOf(num);
 	while(compare(i,i/2)){
 	    pushup(i,i/2);
 	    i = i/2;
 	}
+    }
+    public void remove(){
+	
     }
     public String toString(){
 	return heap.toString();
