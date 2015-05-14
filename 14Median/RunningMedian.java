@@ -37,18 +37,20 @@ public class RunningMedian{
     public double getMedian(){
 	if(larger.size()+smaller.size() == 0)
 	    throw new NoSuchElementException();
-	if((larger.size()+smaller.size())%2==1)
-	    return (double)larger.getRoot()+smaller.getRoot()/2;
+	if((larger.size()+smaller.size())%2==0)
+	    return (double)(larger.getRoot()+smaller.getRoot())/2;
 	if(larger.size()>smaller.size()){
-	    if(smaller.size()==0)
-		return (double)larger.getRoot();
-	    return (double)smaller.getRoot();
-	}
-	else{
-	    if(larger.size()==0)
-		return (double)smaller.getRoot();
 	    return (double)larger.getRoot();
 	}
+	else{
+	    return (double)smaller.getRoot();
+	}
     }
-    
+    public static void main(String[]args){
+	RunningMedian john = new RunningMedian();
+	john.add(5);
+	john.add(10);
+	john.add(4);
+	System.out.println(john.getMedian());
+    }
 }
