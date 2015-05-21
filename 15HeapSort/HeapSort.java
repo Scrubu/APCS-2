@@ -4,58 +4,71 @@ public class HeapSort{
     public static void heapsort(int[] arr){
 	if(arr.length > 1){
 	    heapify(arr);
-	    for(int i = 0; i < arr.length/2; i++){
-		if(i == 0){
-		    if(arr[0]<arr[1]){
-			while(arr[0]<arr[1] || arr[0]< arr[2]){
-			    pushDown(arr, i);
-			}
-		    }
-		    while(arr[i] < arr[2*i] || arr[i] < arr[2*i+1]){
-			pushDown(arr,i);
-		    }
-		}
+	    for(int i = arr.length-1; i >= 0; i--){
+		pushSort(arr,i);
 	    }
 	}
     }
 
+    //makes into heap
     public static void heapify(int[] arr){
-	for(int i = 0; i < arr.length; i++){
+	for(int i = arr.length-1; i >= 0; i--){
 	    pushDown(arr,i);
 	}
     }
-
-    public static void pushDown(int[]arr,int i){
-	if(i == 0){
-	    int sub = arr[0];
-	    int x = 0;
-	    if(arr[0] < arr[1]){
-		sub = arr[1];
-		x=1;
-	    }
-	    else if(arr[0]>arr[1]){
-		
-	    }
-	    else if(arr[0] < arr[2]){
-		sub = arr[2];
-		x=2;
-	    }
-	    arr[x] = arr[0];
-	    arr[0]=sub;
-	}
-	else if(2*i < arr.length && arr[i]<arr[2*i]){
-	    int sub = arr[2*i];
-	    arr[2*i] = arr[i];
-	    arr[i] = sub;
-	}
-	if(2*i+1 < arr.length && arr[i] < arr[2*i+1]){
-	    int sub = arr[2*i+1];
-	    arr[2*i+1] = arr[i];
-	    arr[i] = sub;
+    //sorts the heap
+    public static void pushSort(int[]arr, int i){
+	int sub = arr[0];
+	arr[0]=arr[i];
+	arr[i]=sub;
+	for(int x = 0; x<arr.length; x++){
+	    pushSort2(arr,x,i);
 	}
     }
+    //switches numbers if child is larger than parent 
+    public static void pushSort2(int[]arr, int i, int lim){
+	if(2*i+1 < lim && arr[i]<arr[2*i+1]){
+	    if(2*i+2 < lim){
+		if(arr[2*i+2] < arr[2*i+1]){
+		    int sub = arr[i];
+		    arr[i]= arr[2*i+1];
+		    arr[2*i+1]= sub;
+		}
+		else{
+		    int sub = arr[i];
+		    arr[i]= arr[2*i+2];
+		    arr[2*i+2]= sub;
+		}
+	    }
+	    else{
+		int sub = arr[i];
+		arr[i]= arr[2*i+1];
+		arr[2*i+1]= sub;
+	    }
+	}
+	else if(2*i+2 < lim && arr[i]<arr[2*i+2]){
+	    int sub = arr[i];
+	    arr[i]= arr[2*i+2];
+	    arr[2*i+2]= sub;
+	}
+    }
+    //heapifier helper
+    public static void pushDown(int[]arr,int i){
+	    if(i%2== 1 && i/2-1 > 0 && arr[i] > arr[i/2-1]){
+		int sub = arr[i/2-1];
+		arr[i/2-1] = arr[i];
+		arr[i] = sub;
+	    }
+	    if(i/2 < arr.length && arr[i] > arr[i/2]){
+		int sub = arr[i/2];
+		arr[i/2] = arr[i];
+		arr[i] = sub;
+	    }
+	    System.out.println(Arrays.toString(arr));
+    }
+    
     public static void main(String[]args){
-	int[] n = {100,101,22,1,56,5};
+	int[] n = {100};
 	System.out.println(Arrays.toString(n));
 	HeapSort.heapsort(n);
 	System.out.println(Arrays.toString(n));
